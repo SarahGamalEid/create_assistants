@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA AI Assistant Assignments</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #64748b;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --accent: #f59e0b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar Styling */
+        nav {
+            width: 280px;
+            background-color: #1e293b;
+            color: white;
+            padding: 20px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        nav h2 {
+            font-size: 1.2rem;
+            color: var(--accent);
+            border-bottom: 1px solid #334155;
+            padding-bottom: 10px;
+        }
+
+        .team-link {
+            display: block;
+            padding: 12px;
+            color: #cbd5e1;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .team-link:hover {
+            background-color: #334155;
+            color: white;
+        }
+
+        .team-link.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Main Content Styling */
+        main {
+            flex-grow: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+        }
+
+        .global-card {
+            background: #eff6ff;
+            border-left: 5px solid var(--primary-color);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .assignment-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        h1 { margin-top: 0; color: var(--primary-color); }
+        h3 { color: var(--secondary-color); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .badge {
+            background: var(--accent);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        ul { line-height: 1.6; }
+        .hidden { display: none; }
+
+        code {
+            background: #f1f5f9;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+<nav id="sidebar">
+    <h2>Select Your Team</h2>
+    <div class="team-link active" onclick="showTeam(1)">Team 1: Requirements</div>
+    <div class="team-link" onclick="showTeam(2)">Team 2: Test Case Gen</div>
+    <div class="team-link" onclick="showTeam(3)">Team 3: Test Data</div>
+    <div class="team-link" onclick="showTeam(4)">Team 4: API Testing</div>
+    <div class="team-link" onclick="showTeam(5)">Team 5: Automation</div>
+    <div class="team-link" onclick="showTeam(6)">Team 6: Defect Analysis</div>
+    <div class="team-link" onclick="showTeam(7)">Team 7: Execution & Reporting</div>
+    <div class="team-link" onclick="showTeam(8)">Team 8: Performance</div>
+    <div class="team-link" onclick="showTeam(9)">Team 9: QA Manager</div>
+    <div class="team-link" onclick="showTeam(10)">Team 10: Exploratory</div>
+</nav>
+
+<main>
+    <div class="container">
+        <div class="header">
+            <h1>QA AI Assistant Project</h1>
+            <p>Each team is responsible for <strong>two</strong> AI assistants. Follow the structure below strictly.</p>
+        </div>
+
+        <section class="global-card">
+            <h3>Standard Structure (Required for All)</h3>
+            <ul>
+                <li>Assistant name & purpose | Target users | 3 Real use cases</li>
+                <li><strong>Prompt Design:</strong> Must be structured (Role, Context, Task)</li>
+                <li><strong>Demo:</strong> Sample Input + Sample Output</li>
+                <li><strong>Evaluation:</strong> Accuracy, Time Saved, Risks</li>
+            </ul>
+        </section>
+
+        <!-- Dynamic Content Section -->
+        <div id="assignment-content">
+            <!-- Team 1 Content -->
+            <div id="team1" class="team-content">
+                <div class="assignment-card">
+                    <h2 id="team-title">Team 1: Requirements Analysis Assistant</h2>
+                    
+                    <div class="section-title"><h3>Assistant 1 (Bonus)</h3> <span class="badge">EVERYDAY USE</span></div>
+                    <p>Build a simple assistant (e.g., Daily Planner, Meeting Summarizer, or Habit Tracker) that solves a real daily pain point. Show the "Before vs. After" impact.</p>
+
+                    <div class="section-title"><h3>Assistant 2 (Main Task)</h3> <span class="badge">QA CORE</span></div>
+                    <p><strong>Goal:</strong> Convert user stories into testable requirements.</p>
+                    <ul>
+                        <li>Identify ambiguities in documentation.</li>
+                        <li>Generate clear Acceptance Criteria.</li>
+                        <li>Highlight potential logic risks.</li>
+                    </ul>
+                    <p><strong>Sample Input:</strong> User story for a login page.</p>
+                </div>
+            </div>
+
+            <!-- Team 2 Content -->
+            <div id="team2" class="team-content hidden">
+                <div class="assignment-card">
+                    <h2>Team 2: Test Case Generation Assistant</h2>
+                    <div class="section-title"><h3>Assistant 1 (Bonus)</h3> <span class="badge">EVERYDAY USE</span></div>
+                    <p>Pick one: Daily planner, Summarizer, Email writer, etc.</p>
+
+                    <div class="section-title"><h3>Assistant 2 (Main Task)</h3> <span class="badge">QA CORE</span></div>
+                    <p><strong>Goal:</strong> Generate high-quality manual test cases.</p>
+                    <ul>
+                        <li>Functional test cases.</li>
+                        <li>Negative scenarios & Edge cases.</li>
+                    </ul>
+                    <p><strong>Constraint:</strong> Prompt must use explicit <code>Role</code> and <code>Output Format</code> parameters.</p>
+                </div>
+            </div>
+
+            <!-- Team 3 Content -->
+            <div id="team3" class="team-content hidden">
+                <div class="assignment-card">
+                    <h2>Team 3: Test Data Generation Assistant</h2>
+                    <div class="section-title"><h3>Assistant 1 (Bonus)</h3> <span class="badge">EVERYDAY USE</span></div>
+                    <p>Build a simple daily utility AI tool.</p>
+
+                    <div class="section-title"><h3>Assistant 2 (Main Task)</h3> <span class="badge">QA CORE</span></div>
+                    <p><strong>Goal:</strong> Generate realistic and varied test data.</p>
+                    <ul>
+                        <li>Valid/Invalid data sets.</li>
+                        <li>Boundary values (e.g., age limits, character counts).</li>
+                        <li><strong>Bonus:</strong> Implement a prompt strategy to mask sensitive PII data.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Team 4 Content -->
+            <div id="team4" class="team-content hidden">
+                <div class="assignment-card">
+                    <h2>Team 4: API Testing Assistant</h2>
+                    <div class="section-title"><h3>Assistant 1 (Bonus)</h3> <span class="badge">EVERYDAY USE</span></div>
+                    <p>Build a simple daily utility AI tool.</p>
+
+                    <div class="section-title"><h3>Assistant 2 (Main Task)</h3> <span class="badge">QA CORE</span></div>
+                    <p><strong>Goal:</strong> Help testers validate backend APIs.</p>
+                    <ul>
+                        <li>Generate API test cases.</li>
+                        <li>Create sample JSON requests/payloads.</li>
+                        <li>Validate response schema structure.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Team 5 Content -->
+            <div id="team5" class="team-content hidden">
+                <div class="assignment-card">
+                    <h2>Team 5: Automation Script Assistant</h2>
+                    <div class="section-title"><h3>Assistant 1 (Bonus)</h3> <span class="badge">EVERYDAY USE</span></div>
+                    <p>Build a simple daily utility AI tool.</p>
+
+                    <div class="section-title"><h3>Assistant 2 (Main Task)</h3> <span class="badge">QA CORE</span></div>
+                    <p><strong>Goal:</strong> Generate automation code (Selenium/Playwright).</p>
+                    <ul>
+                        <li>Suggest robust locator strategies (IDs, XPaths).</li>
+                        <li>Improve/Debug flaky test scripts.</li>
+                    </ul>
+                    <p><strong>Constraint:</strong> The AI must provide a brief explanation for the code it generates.</p>
+                </div>
+            </div>
+
+            <!-- Team 6 Content -->
+            <div id="team6" class="team-content hidden">
+                <div class="assignment-card">
+                    <h2>Team 6: Defect Analysis Assistant</h2>
+                    <div class="section-title"><h3>Assistant 1 (Bonus)</h3> <span class="badge">EVERYDAY USE</span></div>
+                    <p>Build a simple daily utility AI tool.</p>
+
+                    <div class="section-title"><h3>Assistant 2 (Main Task)</h3> <span class="badge">QA CORE</span></div>
+                    <p><strong>Goal:</strong> Improve bug quality and reporting.</p>
+                    <ul>
+                        <li>Rewrite messy bug reports into professional ones.</li>
+                        <li>Suggest Severity and Priority levels.</li>
+                        <li>Identify potential Root Cause hints based on logs.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Team 7 Content -->
+            <div id="team7" class="team-content hidden">
+                <div class="assignment-card">
+                    <h2>Team 7: Test Execution & Reporting Assistant</h2>
+                    <div class="section-title"><h3>Assistant 1 (Bonus)</h3> <span class="badge">EVERYDAY USE</span></div>
+                    <p>Build a simple daily utility AI tool.</p>
+
+                    <div class="section-title"><h3>Assistant 2 (Main Task)</h3> <span class="badge">QA CORE</span></div>
+                    <p><strong>Goal:</strong> Summarize results for stakeholders.</p>
+                    <ul>
+                        <li>Generate Test Summary Reports (TSR).</li>
+                        <li>Highlight remaining project risks.</li>
+                        <li>Provide a "Go/No-Go" release recommendation.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Team 8 Content -->
+            <div id="team8" class="team-content hidden">
+                <div class="assignment-card">
+                    <h2>Team 8: Performance Testing Assistant</h2>
+                    <div class="section-title"><h3>Assistant 1 (Bonus)</h3> <span class="badge">EVERYDAY USE</span></div>
+                    <p>Build a simple daily utility AI tool.</p>
+
+                    <div class="section-title"><h3>Assistant 2 (Main Task)</h3> <span class="badge">QA CORE</span></div>
+                    <p><strong>Goal:</strong> Support non-functional testing.</p>
+                    <ul>
+                        <li>Generate Load/Stress scenarios.</li>
+                        <li>Suggest a workload model (Users vs. Time).</li>
+                        <li>Analyze performance bottlenecks from raw results.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Team 9 Content -->
+            <div id="team9" class="team-content hidden">
+                <div class="assignment-card">
+                    <h2>Team 9: QA Manager Assistant</h2>
+                    <div class="section-title"><h3>Assistant 1 (Bonus)</h3> <span class="badge">EVERYDAY USE</span></div>
+                    <p>Build a simple daily utility AI tool.</p>
+
+                    <div class="section-title"><h3>Assistant 2 (Main Task)</h3> <span class="badge">QA CORE</span></div>
+                    <p><strong>Goal:</strong> Support Test Leads and Management.</p>
+                    <ul>
+                        <li>Resource planning and allocation suggestions.</li>
+                        <li>Risk management and mitigation tracking.</li>
+                        <li>KPI tracking (Defect density, Test coverage).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Team 10 Content -->
+            <div id="team10" class="team-content hidden">
+                <div class="assignment-card">
+                    <h2>Team 10: Exploratory Testing Assistant</h2>
+                    <div class="section-title"><h3>Assistant 1 (Bonus)</h3> <span class="badge">EVERYDAY USE</span></div>
+                    <p>Build a simple daily utility AI tool.</p>
+
+                    <div class="section-title"><h3>Assistant 2 (Main Task)</h3> <span class="badge">QA CORE</span></div>
+                    <p><strong>Goal:</strong> Guide testers during unscripted sessions.</p>
+                    <ul>
+                        <li>Suggest creative test ideas/attacks.</li>
+                        <li>Generate Exploratory Charters.</li>
+                        <li>Help track and categorize findings on the fly.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<script>
+    function showTeam(teamNum) {
+        // Update Sidebar links
+        const links = document.querySelectorAll('.team-link');
+        links.forEach((link, index) => {
+            if (index === (teamNum - 1)) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+
+        // Hide all content
+        const contents = document.querySelectorAll('.team-content');
+        contents.forEach(content => {
+            content.classList.add('hidden');
+        });
+
+        // Show selected team content
+        document.getElementById('team' + teamNum).classList.remove('hidden');
+    }
+</script>
+
+</body>
+</html>
