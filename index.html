@@ -1,297 +1,1172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QA AI Core Solutions - Final Build</title>
-    <style>
-        :root {
-            --primary: #0f172a;
-            --accent: #3b82f6;
-            --sidebar-bg: #1e293b;
-            --card-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            --code-bg: #f1f5f9;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IBM Consulting Advantage – Assistant Guide</title>
+<style>
+:root {
+  --ibm-blue:#0f62fe; --ibm-blue-dark:#0043ce; --ibm-blue-light:#d0e2ff;
+  --ibm-teal:#009d9a; --ibm-purple:#8a3ffc; --ibm-cyan:#1192e8;
+  --ibm-green:#198038; --ibm-orange:#ff832b; --ibm-red:#da1e28; --ibm-yellow:#f1c21b;
+  --gray-10:#f4f4f4; --gray-20:#e0e0e0; --gray-30:#c6c6c6; --gray-50:#8d8d8d;
+  --gray-70:#525252; --gray-90:#262626; --gray-100:#161616; --white:#ffffff;
+  --sidebar-w:268px; --header-h:60px;
+  --font-body:'Segoe UI','Helvetica Neue',Arial,sans-serif;
+  --font-mono:'Consolas','Courier New',monospace;
+  --radius-sm:6px; --radius-md:12px;
+  --shadow-card:0 2px 8px rgba(0,0,0,.07),0 6px 20px rgba(0,0,0,.05);
+  --shadow-hover:0 8px 28px rgba(15,98,254,.16),0 2px 8px rgba(0,0,0,.1);
+  --tr:0.22s cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--font-body);background:var(--gray-10);color:var(--gray-90);line-height:1.65;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--ibm-blue);text-decoration:none}
+a:hover{text-decoration:underline}
+ul{list-style:none}
 
-        body { font-family: 'Inter', system-ui, sans-serif; background-color: #f8fafc; color: #334155; margin: 0; display: flex; height: 100vh; }
+/* HEADER */
+.site-header{position:fixed;top:0;left:0;right:0;z-index:1000;height:var(--header-h);background:var(--gray-100);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;box-shadow:0 2px 12px rgba(0,0,0,.4)}
+.header-brand{display:flex;align-items:center;gap:.7rem;color:var(--white);font-weight:700;font-size:.95rem;letter-spacing:.02em}
+.brand-ibm{background:var(--ibm-blue);color:#fff;padding:2px 8px;border-radius:4px;font-size:.8rem;font-weight:800;letter-spacing:.1em}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px}
+.hamburger span{display:block;width:24px;height:2px;background:var(--white);border-radius:2px;transition:var(--tr)}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 
-        nav { width: 320px; background-color: var(--sidebar-bg); color: white; padding: 20px; overflow-y: auto; border-right: 1px solid #334155; flex-shrink: 0; }
-        nav h2 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; margin-bottom: 20px; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+/* LAYOUT */
+.layout{display:flex;padding-top:var(--header-h);min-height:100vh}
 
-        .team-btn { display: block; width: 100%; padding: 12px; margin-bottom: 8px; text-align: left; background: none; border: none; color: #cbd5e1; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; }
-        .team-btn:hover { background: #334155; color: white; }
-        .team-btn.active { background: var(--accent); color: white; font-weight: bold; }
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--white);border-right:1px solid var(--gray-20);position:fixed;top:var(--header-h);left:0;bottom:0;overflow-y:auto;transition:transform var(--tr);z-index:900}
+.sidebar-inner{padding:1.25rem 0 2rem}
+.sidebar-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray-50);padding:1.25rem 1.25rem .35rem}
+.sidebar-nav a{display:flex;align-items:center;gap:.55rem;padding:.5rem 1.25rem;color:var(--gray-70);font-size:.835rem;border-left:3px solid transparent;transition:var(--tr)}
+.sidebar-nav a:hover,.sidebar-nav a.active{background:var(--ibm-blue-light);color:var(--ibm-blue-dark);border-left-color:var(--ibm-blue);text-decoration:none}
+.sidebar-nav .icon{font-size:.95rem;flex-shrink:0}
+.sidebar-overlay{display:none;position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.45)}
 
-        main { flex-grow: 1; padding: 40px; overflow-y: auto; }
-        .container { max-width: 1000px; margin: 0 auto; }
+/* MAIN */
+.main-content{flex:1;margin-left:var(--sidebar-w);min-width:0}
 
-        .solution-card { background: white; border-radius: 16px; padding: 32px; box-shadow: var(--card-shadow); border: 1px solid #e2e8f0; }
-        h1 { color: var(--primary); margin-top: 0; font-size: 1.8rem; }
-        .tag { display: inline-block; background: #dbeafe; color: #1e40af; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-bottom: 15px; }
+/* HERO */
+.hero{background:linear-gradient(140deg,var(--gray-100) 0%,#1a3a6b 55%,var(--ibm-blue) 100%);padding:4rem 2.5rem 3.5rem;color:var(--white);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(15,98,254,.22) 0%,transparent 70%);pointer-events:none}
+.hero-tag{display:inline-block;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);color:#a8c8ff;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:1rem}
+.hero h1{font-size:clamp(1.55rem,4vw,2.5rem);font-weight:700;line-height:1.2;margin-bottom:.75rem}
+.hero p{font-size:1rem;color:rgba(255,255,255,.8);max-width:640px}
 
-        .section-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-top: 20px; }
-        .section-header { font-weight: bold; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; font-size: 1rem; }
+/* SECTIONS */
+.section{padding:3rem 2.5rem;border-bottom:1px solid var(--gray-20)}
+.section:last-of-type{border-bottom:none}
+.section-header{display:flex;align-items:center;gap:.75rem;margin-bottom:2rem}
+.section-icon{width:40px;height:40px;border-radius:var(--radius-sm);background:var(--ibm-blue);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
+.section-title{font-size:1.45rem;font-weight:700;color:var(--gray-100)}
+.section-subtitle{font-size:.85rem;color:var(--gray-50);margin-top:.15rem}
 
-        code { display: block; background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 6px; font-family: 'Fira Code', monospace; font-size: 0.85rem; line-height: 1.6; white-space: pre-wrap; margin-top: 10px; border-left: 4px solid var(--accent); }
-        
-        .mock-img { width: 100%; border-radius: 8px; border: 1px solid #e2e8f0; margin-top: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .url-box { background: #eff6ff; padding: 12px; border-radius: 6px; margin-top: 10px; border: 1px dashed var(--accent); font-size: 0.9rem; }
-        .url-box a { color: var(--accent); text-decoration: none; word-break: break-all; }
+/* TIMELINE */
+.timeline{position:relative}
+.timeline::before{content:'';position:absolute;left:28px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--ibm-blue),var(--ibm-teal))}
+.timeline-item{display:flex;gap:1.25rem;margin-bottom:1.75rem;position:relative}
+.timeline-item:last-child{margin-bottom:0}
+.step-badge{flex-shrink:0;width:58px;height:58px;border-radius:50%;background:var(--ibm-blue);color:var(--white);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;line-height:1;z-index:1;box-shadow:0 0 0 4px var(--white),0 0 0 6px var(--ibm-blue-light)}
+.step-badge span{font-size:1.1rem;font-weight:800;line-height:1}
+.step-card{flex:1;background:var(--white);border-radius:var(--radius-md);border:1px solid var(--gray-20);padding:1.35rem 1.5rem;box-shadow:var(--shadow-card);transition:var(--tr)}
+.step-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px);border-color:var(--ibm-blue-light)}
+.step-card h3{font-size:1rem;font-weight:700;color:var(--gray-100);margin-bottom:.5rem}
+.step-card p{font-size:.9rem;color:var(--gray-70);line-height:1.65}
+.step-card ul{margin-top:.5rem}
+.step-card ul li{font-size:.9rem;color:var(--gray-70);padding:.2rem 0 .2rem 1.1rem;position:relative}
+.step-card ul li::before{content:'▸';position:absolute;left:0;color:var(--ibm-blue);font-size:.75rem}
+.step-tip{margin-top:.65rem;font-size:.87rem;color:var(--ibm-blue-dark);background:#edf5ff;padding:.6rem .85rem;border-radius:var(--radius-sm);border-left:3px solid var(--ibm-blue)}
+.step-img-wrap{margin-top:1.1rem;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--gray-20)}
+.step-img-wrap img{width:100%;height:auto;display:block;border-radius:0}
+.step-img-caption{font-size:.75rem;color:var(--gray-50);padding:.45rem .8rem;border-top:1px solid var(--gray-20);background:var(--gray-10);display:flex;align-items:center;gap:.35rem}
 
-        .user-story-text { font-size: 0.85rem; color: #475569; white-space: pre-line; line-height: 1.5; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e2e8f0; }
+/* IDEA CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.5rem}
+.idea-card{background:var(--white);border-radius:var(--radius-md);border:1px solid var(--gray-20);overflow:hidden;box-shadow:var(--shadow-card);transition:var(--tr);display:flex;flex-direction:column}
+.idea-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-4px);border-color:transparent}
+.idea-card-head{padding:1.2rem 1.4rem 1rem;display:flex;align-items:flex-start;gap:.75rem;border-bottom:1px solid var(--gray-20)}
+.idea-card-icon{width:46px;height:46px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:1.35rem;flex-shrink:0}
+.idea-card-title{font-size:1rem;font-weight:700;color:var(--gray-100)}
+.idea-card-desc{font-size:.84rem;color:var(--gray-70);margin-top:.2rem;line-height:1.55}
 
-        .hidden { display: none; }
-    </style>
+/* TABS */
+.card-tabs{display:flex;border-bottom:1px solid var(--gray-20);background:var(--gray-10)}
+.card-tab{flex:1;padding:.55rem .4rem;font-size:.73rem;font-weight:600;text-align:center;cursor:pointer;color:var(--gray-50);border-bottom:2px solid transparent;transition:var(--tr);border:none;border-bottom:2px solid transparent;background:none;letter-spacing:.01em}
+.card-tab:hover{color:var(--ibm-blue);background:var(--ibm-blue-light)}
+.card-tab.active{color:var(--ibm-blue);border-bottom:2px solid var(--ibm-blue);background:var(--white)}
+.card-panel{display:none;padding:1.1rem 1.4rem;flex:1}
+.card-panel.active{display:block}
+
+/* PANEL INTERNALS */
+.sub-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ibm-blue);margin-bottom:.4rem;margin-top:.9rem}
+.sub-label:first-child{margin-top:0}
+.tag-list{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.35rem}
+.tag{display:inline-block;padding:3px 10px;background:var(--gray-10);border:1px solid var(--gray-20);border-radius:20px;font-size:.75rem;color:var(--gray-70)}
+.prompt-block{background:#f8faff;border:1px solid #c0d8ff;border-left:3px solid var(--ibm-blue);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:.9rem 1rem;font-family:var(--font-mono);font-size:.78rem;color:var(--gray-90);line-height:1.75;white-space:pre-wrap;word-break:break-word;overflow-x:auto;margin-top:.35rem}
+.story-box{background:#f0faf8;border:1px solid #a6e0da;border-radius:var(--radius-sm);padding:.85rem 1rem;font-size:.8rem;color:var(--gray-90);line-height:1.65;white-space:pre-wrap;font-family:var(--font-mono);word-break:break-word}
+.test-section{margin-bottom:1rem}
+.test-section:last-child{margin-bottom:0}
+.test-section h5{font-size:.8rem;font-weight:700;color:var(--gray-90);margin-bottom:.4rem;display:flex;align-items:center;gap:.35rem}
+.test-section p,.test-section li{font-size:.82rem;color:var(--gray-70);line-height:1.6}
+.test-section ul{padding-left:.1rem}
+.test-section ul li{padding:.15rem 0 .15rem 1rem;position:relative}
+.test-section ul li::before{content:'▸';position:absolute;left:0;color:var(--ibm-teal);font-size:.7rem}
+.test-img-wrap{margin-top:.75rem;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--gray-20)}
+.test-img-wrap img{width:100%;height:auto;border-radius:0}
+.test-img-caption{font-size:.72rem;color:var(--gray-50);padding:.35rem .75rem;background:var(--gray-10);border-top:1px solid var(--gray-20)}
+.url-chip{display:inline-flex;align-items:center;gap:.35rem;background:#edf5ff;border:1px solid #b8d4ff;border-radius:20px;padding:3px 10px;font-size:.76rem;color:var(--ibm-blue-dark);font-weight:500;margin:.2rem .2rem 0 0;word-break:break-all}
+.url-chip a{color:var(--ibm-blue-dark)}
+.card-note{margin:1rem 1.4rem 1.1rem;padding:.7rem .9rem;background:#edf5ff;border:1px solid var(--ibm-blue-light);border-radius:var(--radius-sm);font-size:.8rem;color:var(--ibm-blue-dark);display:flex;align-items:flex-start;gap:.45rem}
+.card-note::before{content:'ℹ️';flex-shrink:0}
+
+/* COLOR CHIPS */
+.c-blue{background:#dde8ff} .c-teal{background:#d9fbfb} .c-purple{background:#e8d5fb}
+.c-cyan{background:#bae6ff} .c-green{background:#d2f4e8} .c-orange{background:#ffe4c8}
+.c-red{background:#ffd7d9} .c-yellow{background:#fdf4c6} .c-indigo{background:#d0d1ff}
+
+/* FOOTER */
+footer{background:var(--gray-100);color:var(--gray-30);text-align:center;padding:2.5rem 2rem;font-size:.85rem}
+footer strong{color:var(--white)}
+
+/* RESPONSIVE */
+@media(max-width:1024px){:root{--sidebar-w:230px} .section{padding:2.5rem 2rem}}
+@media(max-width:768px){
+  .hamburger{display:flex}
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0);box-shadow:4px 0 24px rgba(0,0,0,.2)}
+  .sidebar-overlay.open{display:block}
+  .main-content{margin-left:0}
+  .hero{padding:2.5rem 1.25rem 2rem}
+  .section{padding:2rem 1.25rem}
+  .timeline::before{left:22px}
+  .step-badge{width:46px;height:46px}
+  .step-badge span{font-size:.95rem}
+  .cards-grid{grid-template-columns:1fr}
+  .timeline-item{gap:.9rem}
+}
+@media(max-width:480px){
+  .hero h1{font-size:1.4rem}
+  .section-title{font-size:1.2rem}
+  .step-card{padding:1rem 1.1rem}
+  .idea-card-head{padding:.95rem 1.1rem .8rem}
+  .card-panel{padding:.9rem 1rem}
+  .card-note{margin:.75rem 1rem .9rem}
+}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-track{background:transparent}
+.sidebar::-webkit-scrollbar-thumb{background:var(--gray-20);border-radius:2px}
+</style>
 </head>
 <body>
 
-<nav>
-    <h2>QA CORE ASSIGNMENTS</h2>
-    <button class="team-btn active" onclick="showTeam(1)">T1: Requirements Analysis</button>
-    <button class="team-btn" onclick="showTeam(2)">T2: Test Case Generation</button>
-    <button class="team-btn" onclick="showTeam(3)">T3: API Testing</button>
-    <button class="team-btn" onclick="showTeam(4)">T4: Automation Script</button>
-    <button class="team-btn" onclick="showTeam(5)">T5: Defect Analysis</button>
-    <button class="team-btn" onclick="showTeam(6)">T6: Execution & Reporting</button>
-    <button class="team-btn" onclick="showTeam(7)">T7: Performance Testing</button>
-    <button class="team-btn" onclick="showTeam(8)">T8: QA Manager Assistant</button>
-    <button class="team-btn" onclick="showTeam(9)">T9: Exploratory Testing</button>
-    <button class="team-btn" onclick="showTeam(10)">T10: Test Data Generation</button>
-</nav>
+<header class="site-header">
+  <div class="header-brand">
+    <span class="brand-ibm">IBM</span>
+    Consulting Advantage &mdash; Assistant Guide
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+</header>
 
-<main>
-    <div class="container">
-        
-        <!-- Team 1 -->
-        <div id="t1" class="team-content">
-            <div class="solution-card">
-                <span class="tag">Team 1: Requirements</span>
-                <h1>Requirements Analysis Assistant</h1>
-                
-                <div class="section-box">
-                    <div class="section-header">🖼️ Reference Mockup & User Story</div>
-                    <!--  <img src="https://ibb.co/QvH15jC7" alt="Login Page Mockup" class="mock-img"> -->
-                    <a href="https://ibb.co/QvH15jC7"><img src="https://i.ibb.co/QvH15jC7/Chat-GPT-Image-May-3-2026-10-49-42-PM.png" alt="Chat-GPT-Image-May-3-2026-10-49-42-PM" border="0"></a>
-                    <div class="user-story-text" style="margin-top:20px;">
-                        <strong>User Story for E-commerce Login Page</strong>
-                        Title: Login to E-commerce Account
-                        As a registered user, I want to log in to my account so I access my profile, view orders, and complete purchases.
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-                        <strong>Acceptance Criteria:</strong>
-                        • User enters valid email and password and logs in successfully
-                        • System validates email format
-                        • System shows error for invalid credentials
-                        • User gets error after wrong password attempts
-                        • Account locks after 5 failed attempts
-                        • User clicks “Forgot Password” to reset password
-                        • User selects “Remember me” to stay logged in
-                        • User logs in using Google or Facebook
-                        • User navigates to sign up if not registered
-
-                        <strong>Preconditions:</strong> User is registered, has valid credentials, Login page available.
-                        <strong>Flow:</strong> Open login -> Enter Email -> Enter Password -> Click Login -> Validate -> Redirect to Homepage.
-                    </div>
-                </div>
-
-                <div class="section-box">
-                    <div class="section-header">🤖 Structured Prompt</div>
-                    <code>Role: Senior QA Business Analyst
-Context: You are analyzing user stories for a web or mobile application. The goal is to transform unclear requirements into testable, complete, and unambiguous specifications.
-Tasks:
-1. Identify missing details, ambiguities, and contradictions.
-2. Rewrite the user story in a clear and testable format.
-3. Generate at least 5 acceptance criteria using Given/When/Then.
-4. Identify edge cases and failure scenarios.
-5. Highlight risks that may impact testing or production.
-Output: Refined Story, Issues/Gaps, Acceptance Criteria (Gherkin), Edge Cases, Risks.</code>
-                </div>
-            </div>
-        </div>
-
-        <!-- Team 2 -->
-        <div id="t2" class="team-content hidden">
-            <div class="solution-card">
-                <span class="tag">Team 2: Manual Testing</span>
-                <h1>Test Case Generation Assistant</h1>
-                <div class="section-box">
-                    <div class="section-header">🤖 Structured Prompt</div>
-                    <code>Role: Senior QA Test Engineer
-Context: You are generating functional test cases based on a user story. Goal: Full coverage with clear expected results.
-Tasks:
-1. Generate functional test cases only (Positive, Negative, Edge).
-2. Ensure clear Expected Results and Preconditions for each step.
-Output: Table [Test ID, Title, Preconditions, Steps, Expected Results].</code>
-                </div>
-            </div>
-        </div>
-
-        <!-- Team 3 (API) -->
-        <div id="t3" class="team-content hidden">
-            <div class="solution-card">
-                <span class="tag">Team 3: API</span>
-                <h1>API Testing Assistant</h1>
-                <div class="section-box">
-                    <div class="section-header">🔗 Reference Documentation</div>
-                    <div class="url-box">
-                        <a href="https://automationexercise.com/api_list" target="_blank">Automation Exercise API List</a><br>
-                        <a href="https://beeceptor.com/docs/sample-api-for-testing/" target="_blank">Beeceptor Sample API</a>
-                    </div>
-                </div>
-                <div class="section-box">
-                    <div class="section-header">🤖 Structured Prompt</div>
-                    <code>Role: Backend QA Engineer
-Context: Validating REST APIs to ensure correctness of requests, responses, and schema.
-Tasks:
-1. Generate API test cases and request payloads (JSON).
-2. Validate response structure and suggest status code validations.
-3. Identify negative scenarios.
-Output: Test Cases, Payloads, Validation Rules, Negative Scenarios.</code>
-                </div>
-            </div>
-        </div>
-
-        <!-- Team 4 (Automation) -->
-        <div id="t4" class="team-content hidden">
-            <div class="solution-card">
-                <span class="tag">Team 4: Automation</span>
-                <h1>Automation Script Assistant</h1>
-                <div class="section-box">
-                    <div class="section-header">🔗 Target Environments</div>
-                    <div class="url-box">
-                        <a href="https://automationexercise.com/login" target="_blank">Automation Exercise Login</a><br>
-                        <a href="https://practice.expandtesting.com/login" target="_blank">ExpandTesting Login</a>
-                    </div>
-                </div>
-                <div class="section-box">
-                    <div class="section-header">🤖 Structured Prompt</div>
-                    <code>Role: SDET
-Context: Converting manual test cases into maintainable automation scripts.
-Tasks:
-1. Convert steps into code using Page Object Model (POM).
-2. Use stable locator strategies and handle synchronization (waits).
-Output: Automation Code, Page Object Structure, Brief Explanation.</code>
-                </div>
-            </div>
-        </div>
-
-        <!-- Team 5 (Defects) -->
-        <div id="t5" class="team-content hidden">
-            <div class="solution-card">
-                <span class="tag">Team 5: Analysis</span>
-                <h1>Defect Analysis Assistant</h1>
-                <div class="section-box">
-                    <div class="section-header">🤖 Structured Prompt</div>
-                    <code>Role: Senior QA Engineer
-Context: Improving defect report quality and analyzing root causes.
-Tasks:
-1. Rewrite raw bug descriptions clearly.
-2. Define expected vs actual results and severity/priority.
-3. Suggest possible root causes.
-Output: Bug Title, Steps, Expected/Actual, Severity, Root Cause Suggestion.</code>
-                </div>
-            </div>
-        </div>
-
-        <!-- Team 6 (Reporting) -->
-        <div id="t6" class="team-content hidden">
-            <div class="solution-card">
-                <span class="tag">Team 6: Reporting</span>
-                <h1>Test Execution & Reporting Assistant</h1>
-                <div class="section-box">
-                    <div class="section-header">🤖 Structured Prompt</div>
-                    <code>Role: QA Lead
-Context: Analyzing execution results to generate reports for stakeholders.
-Tasks:
-1. Summarize execution metrics (Pass/Fail/Blocked).
-2. Highlight trends and project risks.
-3. Provide Go/No-Go recommendation.
-Output: Executive Summary, Metrics, Risks, Recommendation.</code>
-                </div>
-            </div>
-        </div>
-
-        <!-- Team 7 (Performance) -->
-        <div id="t7" class="team-content hidden">
-            <div class="solution-card">
-                <span class="tag">Team 7: Performance</span>
-                <h1>Performance Testing Assistant</h1>
-                <div class="section-box">
-                    <div class="section-header">🤖 Structured Prompt</div>
-                    <code>Role: Performance Engineer
-Tasks:
-1. Define workload models and suggest Load/Stress scenarios.
-2. Analyze performance metrics and identify bottlenecks.
-Output: Workload Model, Test Scenarios, Analysis, Bottleneck ID.</code>
-                </div>
-            </div>
-        </div>
-
-        <!-- Team 8 (Management) -->
-        <div id="t8" class="team-content hidden">
-            <div class="solution-card">
-                <span class="tag">Team 8: Management</span>
-                <h1>QA Manager Assistant</h1>
-                <div class="section-box">
-                    <div class="section-header">🤖 Structured Prompt</div>
-                    <code>Role: QA Manager
-Context: Supporting QA leadership in planning and tracking.
-Tasks:
-1. Suggest resource allocation and define KPIs.
-2. Identify risks and provide mitigation plans.
-Output: Resource Plan, KPIs, Risks, Mitigation Plan.</code>
-                </div>
-            </div>
-        </div>
-
-        <!-- Team 9 (Exploratory) -->
-        <div id="t9" class="team-content hidden">
-            <div class="solution-card">
-                <span class="tag">Team 9: Exploratory</span>
-                <h1>Exploratory Testing Assistant</h1>
-                <div class="section-box">
-                    <div class="section-header">🤖 Structured Prompt</div>
-                    <code>Role: Exploratory Testing Expert
-Tasks:
-1. Generate test charters and exploratory scenarios.
-2. Identify weak areas and creative test focus zones.
-Output: Test Charter, Test Ideas, Risk Areas, Suggested Focus.</code>
-                </div>
-            </div>
-        </div>
-
-        <!-- Team 10 (Test Data) -->
-        <div id="t10" class="team-content hidden">
-            <div class="solution-card">
-                <span class="tag">Team 10: Data</span>
-                <h1>Test Data Generation Assistant</h1>
-                <div class="section-box">
-                    <div class="section-header">🤖 Structured Prompt</div>
-                    <code>Role: Test Data Specialist
-Context: Generating realistic datasets while ensuring safety.
-Tasks:
-1. Generate Valid, Invalid, and Boundary value datasets.
-2. Replace all sensitive PII with synthetic values.
-Output: JSON or CSV format (Sections: Valid, Invalid, Boundary).</code>
-                </div>
-            </div>
-        </div>
-
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-label">How to Create</div>
+      <nav class="sidebar-nav" id="mainNav">
+        <a href="#how-to-create" class="active"><span class="icon">🗺️</span> Overview</a>
+        <a href="#step-1"><span class="icon">①</span> Log On</a>
+        <a href="#step-2"><span class="icon">②</span> Navigate to Studio</a>
+        <a href="#step-3"><span class="icon">③</span> Choose Experience</a>
+        <a href="#step-4"><span class="icon">④</span> Modify Config</a>
+        <a href="#step-5"><span class="icon">⑤</span> Prepare Test Data</a>
+        <a href="#step-6"><span class="icon">⑥</span> Preview &amp; Test</a>
+        <a href="#step-7"><span class="icon">⑦</span> Publish</a>
+        <div class="sidebar-label">Assistant Ideas</div>
+        <a href="#ideas"><span class="icon">💡</span> All Ideas</a>
+        <a href="#req-analysis"><span class="icon">📋</span> Team #1 : Requirements Analysis</a>
+        <a href="#test-case"><span class="icon">🧪</span> Team #2 :Test Case Generation</a>
+        <a href="#api-testing"><span class="icon">🔌</span> Team #3 :API Testing</a>
+        <a href="#automation"><span class="icon">🤖</span> Team #4 :Automation Script</a>
+        <a href="#defect-analysis"><span class="icon">🐛</span> Team #5 :Defect Analysis</a>
+        <a href="#perf-testing"><span class="icon">⚡</span> Team #6 Advanced:Performance Testing</a>
+        <a href="#qa-manager"><span class="icon">🎯</span> Team #7 Advanced :QA Manager</a>
+        <a href="#exploratory"><span class="icon">🔍</span> Team #8 Advanced :Exploratory Testing</a>
+        <a href="#test-data-gen"><span class="icon">🗄️</span> Team #9 Advanced :Test Data Generation</a>
+      </nav>
     </div>
-</main>
+  </aside>
+
+  <main class="main-content">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-tag">IBM Consulting Advantage</div>
+      <h1>AI Assistant Creation &amp; Testing Guide</h1>
+      <p>A step-by-step guide for creating, configuring, testing, and publishing AI-powered assistants — built for QA and consulting teams.</p>
+    </div>
+
+    <!-- HOW TO CREATE -->
+    <section class="section" id="how-to-create">
+      <div class="section-header">
+        <div class="section-icon">🗺️</div>
+        <div>
+          <div class="section-title">How to Create an Assistant in IBM Consulting Advantage</div>
+          <div class="section-subtitle">Follow these seven steps to configure and publish your first AI assistant</div>
+        </div>
+      </div>
+
+      <div class="timeline">
+
+        <div class="timeline-item" id="step-1">
+          <div class="step-badge"><span>1</span>Step</div>
+          <div class="step-card">
+            <h3>Log On to IBM Consulting Advantage</h3>
+            <p>Open your browser and navigate to the IBM Consulting Advantage portal. Sign in with your IBM credentials to access the platform dashboard.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item" id="step-2">
+          <div class="step-badge"><span>2</span>Step</div>
+          <div class="step-card">
+            <h3>Navigate to Agent &amp; Assistant Studio</h3>
+            <p>Once logged in, start your assistant creation through one of two paths:</p>
+            <ul>
+              <li>From the <strong>left navigation panel</strong>, click <strong>Agent &amp; Assistant Studio</strong>, then click <strong>Get Started</strong>.</li>
+              <li>Or click <strong>Agent &amp; Assistant Library</strong> → <strong>Create an Agent</strong> → select <strong>In-app Experience</strong>.</li>
+            </ul>
+            <div class="step-img-wrap">
+              <img src="https://i.ibb.co/23G03TWF/Step-1-access-assistant.png" alt="IBM Consulting Advantage – Navigation Panel showing Agent & Assistant Studio" loading="lazy" />
+              <div class="step-img-caption">📸 IBM Consulting Advantage – Navigation Panel</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item" id="step-3">
+          <div class="step-badge"><span>3</span>Step</div>
+          <div class="step-card">
+            <h3>Choose Your Creation Method</h3>
+            <p>IBM Consulting Advantage offers two approaches for creating your assistant:</p>
+            <ul>
+              <li><strong>Chat Experience</strong> — Describe your assistant in plain language. The platform auto-generates all fields and provides a live preview on the right side of the screen. Ideal for rapid setup.</li>
+              <li><strong>Manual Configuration</strong> — Full control over every field, behavior, and configuration option. Best for complex or specialized use cases.</li>
+            </ul>
+            <div class="step-tip">💡 <strong>Tip:</strong> The Chat Experience is the fastest route — just describe what you want and the platform populates the configuration for you automatically.</div>
+            <div class="step-img-wrap">
+              <img src="https://i.ibb.co/GQJVjqz3/step-3-write-description.png" alt="Chat Experience and Manual Configuration options in IBM Consulting Advantage" loading="lazy" />
+              <div class="step-img-caption">📸 Chat Experience &amp; Manual Configuration Screen</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item" id="step-4">
+          <div class="step-badge"><span>4</span>Step</div>
+          <div class="step-card">
+            <h3>Modify Your Assistant Configuration</h3>
+            <p>Your assistant is never locked. At any time you can edit and refine:</p>
+            <ul>
+              <li>Prompts and system-level assistant instructions</li>
+              <li>Input fields, labels, and output format preferences</li>
+              <li>Tone, response style, and behavior settings</li>
+              <li>Advanced configurations and tool/API integrations</li>
+            </ul>
+            <div class="step-img-wrap">
+              <img src="https://i.ibb.co/VW76PsBn/final-step-edit-ur-fields.png" alt="Edit assistant fields and configurations in IBM Consulting Advantage" loading="lazy" />
+              <div class="step-img-caption">📸 Edit Fields &amp; Configuration Panel</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item" id="step-5">
+          <div class="step-badge"><span>5</span>Step</div>
+          <div class="step-card">
+            <h3>Prepare Your Test Data</h3>
+            <p>Before testing, gather representative assets that reflect your real-world use case:</p>
+            <ul>
+              <li>User stories and acceptance criteria</li>
+              <li>Requirement documents (functional &amp; non-functional)</li>
+              <li>Application URLs and API endpoint references</li>
+              <li>API documentation (Swagger, Postman, etc.)</li>
+              <li>Mockups, wireframes, and design files</li>
+              <li>Screenshots of the application under test</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="timeline-item" id="step-6">
+          <div class="step-badge"><span>6</span>Step</div>
+          <div class="step-card">
+            <h3>Preview &amp; Test in Real Time</h3>
+            <p>Use the built-in preview panel to interact with your assistant exactly as end users will. Test with your prepared data, evaluate response quality, and refine configurations based on actual output — no deployment needed.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item" id="step-7">
+          <div class="step-badge"><span>7</span>Step</div>
+          <div class="step-card">
+            <h3>Publish Your Assistant</h3>
+            <p>Once you have validated performance and are satisfied with output quality, click <strong>Publish</strong>. The assistant immediately becomes available in your team's library, ready to use across all projects.</p>
+          </div>
+        </div>
+
+      </div><!-- /.timeline -->
+    </section>
+
+    <!-- ASSISTANT IDEAS -->
+    <section class="section" id="ideas">
+      <div class="section-header">
+        <div class="section-icon">💡</div>
+        <div>
+          <div class="section-title">Assistant Creation Ideas</div>
+          <div class="section-subtitle">Click the tabs inside each card to switch between What You Need, Suggested Prompt, and Test Data</div>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+
+        <!-- 1. Requirements Analysis -->
+        <div class="idea-card" id="req-analysis">
+          <div class="idea-card-head">
+            <div class="idea-card-icon c-blue">📋</div>
+            <div>
+              <div class="idea-card-title">Requirements Analysis Assistant</div>
+              <div class="idea-card-desc">Transform ambiguous requirements into clear, testable specifications by identifying gaps, risks, and missing acceptance criteria.</div>
+            </div>
+          </div>
+          <div class="card-tabs">
+            <button class="card-tab active" onclick="switchTab(this,'ra-what')">What You Need</button>
+            <button class="card-tab" onclick="switchTab(this,'ra-prompt')">Suggested Prompt</button>
+            <button class="card-tab" onclick="switchTab(this,'ra-data')">Test Data</button>
+          </div>
+          <div id="ra-what" class="card-panel active">
+            <div class="sub-label">Required Inputs</div>
+            <div class="tag-list">
+              <span class="tag">User Story</span><span class="tag">Acceptance Criteria</span>
+              <span class="tag">Mockups / Wireframes</span><span class="tag">Business Rules</span><span class="tag">Domain Context</span>
+            </div>
+          </div>
+          <div id="ra-prompt" class="card-panel">
+            <div class="sub-label">Suggested Prompt</div>
+            <div class="prompt-block">## Role
+You are a Senior QA Business Analyst with 10+ years of experience
+in software quality assurance and requirements engineering.
+
+## Goal
+Analyze the provided user story and acceptance criteria.
+Produce a structured requirements analysis report.
+
+## Instructions
+1. Identify all explicit and implicit requirements
+2. Flag ambiguous, contradictory, or incomplete statements
+3. List missing acceptance criteria not covered by the story
+4. Identify potential edge cases and negative scenarios
+5. Highlight business rule conflicts or gaps
+6. Rate each finding: Critical / Major / Minor
+
+## Output Format
+### ✅ Requirement Summary
+[Brief description of what the feature does]
+
+### ⚠️ Gaps & Ambiguities
+| # | Finding | Severity | Clarification Needed |
+|---|---------|----------|----------------------|
+
+### 🔲 Missing Acceptance Criteria
+- [List of missing criteria]
+
+### 🔴 Risks
+- [Business or technical risks identified]
+
+### ✏️ Suggested Rewrites
+[Improved versions of unclear criteria]
+
+## Input
+[Paste user story and acceptance criteria here]</div>
+          </div>
+          <div id="ra-data" class="card-panel">
+            <div class="test-section">
+              <h5>📝 User Story — E-commerce Login</h5>
+              <div class="story-box">Title: Login to E-commerce Account
+
+As a registered user, I want to log in to my account
+so I can access my profile, view orders, and complete purchases.
+
+Acceptance Criteria:
+• Valid email + password → successful login
+• System validates email format
+• System shows error for invalid credentials
+• Error message shown after wrong password attempts
+• Account locks after 5 failed attempts
+• "Forgot Password" link → password reset flow
+• "Remember Me" checkbox → session persists
+• Social login via Google or Facebook
+• Link to Sign Up for non-registered users
+
+Preconditions: User is registered. Login page is accessible.
+Flow: Open login → Enter Email → Enter Password
+   → Click Login → Validate → Redirect to Homepage</div>
+            </div>
+            <div class="test-section">
+              <h5>🖼️ UI Design Reference</h5>
+              <div class="test-img-wrap">
+                <img src="https://i.ibb.co/Swm9L7dD/Chat-GPT-Image-May-3-2026-10-49-42-PM.png" alt="E-commerce Login Page UI Design Mockup" loading="lazy" />
+                <div class="test-img-caption">📸 E-commerce Login Page – UI Design Mockup</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-note">You can edit the prompt, instructions, and assistant fields based on your project needs.</div>
+        </div>
+
+        <!-- 2. Test Case Generation -->
+        <div class="idea-card" id="test-case">
+          <div class="idea-card-head">
+            <div class="idea-card-icon c-teal">🧪</div>
+            <div>
+              <div class="idea-card-title">Test Case Generation Assistant</div>
+              <div class="idea-card-desc">Automatically generate comprehensive test cases covering functional, edge, and negative scenarios from user stories or requirements.</div>
+            </div>
+          </div>
+          <div class="card-tabs">
+            <button class="card-tab active" onclick="switchTab(this,'tc-what')">What You Need</button>
+            <button class="card-tab" onclick="switchTab(this,'tc-prompt')">Suggested Prompt</button>
+            <button class="card-tab" onclick="switchTab(this,'tc-data')">Test Data</button>
+          </div>
+          <div id="tc-what" class="card-panel active">
+            <div class="sub-label">Required Inputs</div>
+            <div class="tag-list">
+              <span class="tag">User Story</span><span class="tag">Acceptance Criteria</span>
+              <span class="tag">Mockups</span><span class="tag">Business Rules</span><span class="tag">Feature Specs</span>
+            </div>
+          </div>
+          <div id="tc-prompt" class="card-panel">
+            <div class="sub-label">Suggested Prompt</div>
+            <div class="prompt-block">## Role
+You are a Senior QA Test Engineer specialized in functional
+and regression test design using industry best practices.
+
+## Goal
+Generate a complete, structured test suite from the provided
+user story and acceptance criteria.
+
+## Instructions
+Cover ALL of the following scenario types:
+1. ✅ Positive / Happy Path scenarios
+2. ❌ Negative / Error scenarios
+3. 🔲 Boundary value analysis
+4. ⚙️ Edge cases and corner cases
+5. 🔐 Security-related scenarios (if applicable)
+6. ♿ Accessibility scenarios (if applicable)
+
+## Output Format
+Return a Markdown table for each scenario group:
+
+| Test ID | Test Title | Preconditions | Steps | Expected Result | Priority | Type |
+|---------|------------|---------------|-------|-----------------|----------|------|
+
+## Naming Convention
+TC-[FEATURE]-[NUMBER]  e.g., TC-LOGIN-001
+
+## Priority Levels
+P1: Critical | P2: High | P3: Medium | P4: Low
+
+## Input
+[Paste user story here]</div>
+          </div>
+          <div id="tc-data" class="card-panel">
+            <div class="test-section">
+              <h5>📝 User Story — E-commerce Login</h5>
+              <div class="story-box">As a registered user, I want to log in to my
+e-commerce account so I can view orders and complete purchases.
+
+Key scenarios to cover:
+• TC-LOGIN-001: Valid login (email + password)
+• TC-LOGIN-002: Invalid email format → error
+• TC-LOGIN-003: Wrong password → error message
+• TC-LOGIN-004: 5 failed attempts → account lock
+• TC-LOGIN-005: Forgot Password flow
+• TC-LOGIN-006: Remember Me checkbox behavior
+• TC-LOGIN-007: Google OAuth login
+• TC-LOGIN-008: Facebook OAuth login
+• TC-LOGIN-009: Navigate to Sign Up link</div>
+            </div>
+            <div class="test-section">
+              <h5>🖼️ Login UI Reference</h5>
+              <div class="test-img-wrap">
+                <img src="https://i.ibb.co/Swm9L7dD/Chat-GPT-Image-May-3-2026-10-49-42-PM.png" alt="Login UI Design Mockup for test case generation" loading="lazy" />
+                <div class="test-img-caption">📸 Use this design to validate field layout and UX behaviors</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-note">You can edit the prompt, instructions, and assistant fields based on your project needs.</div>
+        </div>
+
+        <!-- 3. API Testing -->
+        <div class="idea-card" id="api-testing">
+          <div class="idea-card-head">
+            <div class="idea-card-icon c-purple">🔌</div>
+            <div>
+              <div class="idea-card-title">API Testing Assistant</div>
+              <div class="idea-card-desc">Analyze API specifications and generate comprehensive test scenarios including contract, security, and error-handling validation.</div>
+            </div>
+          </div>
+          <div class="card-tabs">
+            <button class="card-tab active" onclick="switchTab(this,'api-what')">What You Need</button>
+            <button class="card-tab" onclick="switchTab(this,'api-prompt')">Suggested Prompt</button>
+            <button class="card-tab" onclick="switchTab(this,'api-data')">Test Data</button>
+          </div>
+          <div id="api-what" class="card-panel active">
+            <div class="sub-label">Required Inputs</div>
+            <div class="tag-list">
+              <span class="tag">API Documentation</span><span class="tag">OpenAPI / Swagger</span>
+              <span class="tag">Postman Collection</span><span class="tag">Auth Details</span><span class="tag">Base URL</span>
+            </div>
+          </div>
+          <div id="api-prompt" class="card-panel">
+            <div class="sub-label">Suggested Prompt</div>
+            <div class="prompt-block">## Role
+You are a Senior API QA Specialist with deep expertise in
+REST/GraphQL API testing and contract validation.
+
+## Goal
+Review the provided API documentation and generate a complete
+API test plan with test cases for every endpoint.
+
+## Instructions
+For each endpoint, generate test cases covering:
+1. ✅ Valid requests — expected 2xx responses
+2. ❌ Invalid requests — missing/wrong params → 4xx
+3. 🔐 Auth & Authorization:
+   - Valid token, expired token, no token, wrong role
+4. 📦 Payload validation:
+   - Required fields, data types, max length, special chars
+5. 🔁 Idempotency — behavior on repeated identical calls
+6. ⚡ Performance — response time thresholds
+7. 🌐 Response schema validation — match documented contract
+
+## Output Format per Endpoint
+### [METHOD] /endpoint – [Description]
+| Test ID | Scenario | Request Payload | Expected Status | Expected Body | Priority |
+|---------|----------|----------------|-----------------|---------------|----------|
+
+## Input
+[Paste API documentation or endpoint list here]</div>
+          </div>
+          <div id="api-data" class="card-panel">
+            <div class="test-section">
+              <h5>🔌 Practice API</h5>
+              <div class="url-chip">🔗 <a href="https://automationexercise.com/api_list" target="_blank" rel="noopener">automationexercise.com/api_list</a></div>
+            </div>
+            <div class="test-section">
+              <h5>📋 Sample Endpoints</h5>
+              <ul>
+                <li>POST /api/createAccount — register new user</li>
+                <li>POST /api/verifyLogin — authenticate user</li>
+                <li>GET /api/productsList — retrieve catalog</li>
+                <li>POST /api/searchProduct — keyword search</li>
+                <li>DELETE /api/deleteAccount — remove account</li>
+              </ul>
+            </div>
+            <div class="test-section">
+              <h5>🔐 Test Credentials</h5>
+              <div class="story-box">Valid:
+  email: test@qa.com
+  password: Test@1234
+
+Invalid:
+  email: notanemail  (invalid format)
+  password: (empty string)
+
+Security:
+  Expired token: Bearer eyJinvalidToken123
+  No auth header: omit Authorization entirely
+  SQL injection: ' OR '1'='1'--</div>
+            </div>
+          </div>
+          <div class="card-note">You can edit the prompt, instructions, and assistant fields based on your project needs.</div>
+        </div>
+
+        <!-- 4. Automation Script -->
+        <div class="idea-card" id="automation">
+          <div class="idea-card-head">
+            <div class="idea-card-icon c-cyan">🤖</div>
+            <div>
+              <div class="idea-card-title">Automation Script Assistant</div>
+              <div class="idea-card-desc">Generate ready-to-run test automation scripts in Selenium, Playwright, or Cypress from manual test cases or user stories.</div>
+            </div>
+          </div>
+          <div class="card-tabs">
+            <button class="card-tab active" onclick="switchTab(this,'aut-what')">What You Need</button>
+            <button class="card-tab" onclick="switchTab(this,'aut-prompt')">Suggested Prompt</button>
+            <button class="card-tab" onclick="switchTab(this,'aut-data')">Test Data</button>
+          </div>
+          <div id="aut-what" class="card-panel active">
+            <div class="sub-label">Required Inputs</div>
+            <div class="tag-list">
+              <span class="tag">Manual Test Cases</span><span class="tag">Framework Preference</span>
+              <span class="tag">Application URL</span><span class="tag">Language (JS/Python/Java)</span><span class="tag">Selector Strategy</span>
+            </div>
+          </div>
+          <div id="aut-prompt" class="card-panel">
+            <div class="sub-label">Suggested Prompt</div>
+            <div class="prompt-block">## Role
+You are a Senior Test Automation Engineer with expertise in
+Selenium, Playwright, and Cypress frameworks.
+
+## Goal
+Convert the provided manual test cases into production-ready
+automated test scripts following clean code practices.
+
+## Instructions
+1. Use Page Object Model (POM) design pattern
+2. Add explicit waits — avoid Thread.sleep / hardcoded delays
+3. Include meaningful assertions for each action
+4. Add clear inline comments explaining each step
+5. Handle positive AND negative scenarios
+6. Include beforeEach (setup) and afterEach (teardown) hooks
+7. Use data-driven approach — parameterize test inputs
+8. Follow [Framework] naming conventions and best practices
+
+## Structure to Generate
+- 📄 Page Object class (locators + actions)
+- 🧪 Test spec / test class (test scenarios)
+- 📦 Test data file (JSON or constants file)
+
+## Framework & Language
+[Playwright / Selenium / Cypress] — [JavaScript / Python / Java]
+
+## Application URL
+[Paste URL here]
+
+## Manual Test Cases
+[Paste test cases here]</div>
+          </div>
+          <div id="aut-data" class="card-panel">
+            <div class="test-section">
+              <h5>🌐 Practice Applications</h5>
+              <div class="url-chip">🔗 <a href="https://practice.expandtesting.com/login" target="_blank" rel="noopener">practice.expandtesting.com/login</a></div>
+              <div class="url-chip">🔗 <a href="https://automationexercise.com/login" target="_blank" rel="noopener">automationexercise.com/login</a></div>
+            </div>
+            <div class="test-section">
+              <h5>🖼️ Login UI Reference</h5>
+              <div class="test-img-wrap">
+                <img src="https://i.ibb.co/Swm9L7dD/Chat-GPT-Image-May-3-2026-10-49-42-PM.png" alt="Login page UI for automation scripting reference" loading="lazy" />
+                <div class="test-img-caption">📸 Use this design to identify locators — IDs, labels, button text</div>
+              </div>
+            </div>
+            <div class="test-section">
+              <h5>📋 Sample Test Credentials</h5>
+              <div class="story-box">Valid user:
+  username: practice
+  password: SuperSecretPassword!
+
+Invalid scenarios:
+  Wrong password:    wrongpass123
+  Empty email:       (submit blank)
+  SQL injection:     ' OR '1'='1
+  XSS:               &lt;script&gt;alert('xss')&lt;/script&gt;
+  Very long input:   a × 500 characters</div>
+            </div>
+          </div>
+          <div class="card-note">You can edit the prompt, instructions, and assistant fields based on your project needs.</div>
+        </div>
+
+        <!-- 5. Defect Analysis -->
+        <div class="idea-card" id="defect-analysis">
+          <div class="idea-card-head">
+            <div class="idea-card-icon c-red">🐛</div>
+            <div>
+              <div class="idea-card-title">Defect Analysis Assistant</div>
+              <div class="idea-card-desc">Analyze bug reports, identify root causes, suggest fixes, and classify defects by severity, priority, and affected components.</div>
+            </div>
+          </div>
+          <div class="card-tabs">
+            <button class="card-tab active" onclick="switchTab(this,'def-what')">What You Need</button>
+            <button class="card-tab" onclick="switchTab(this,'def-prompt')">Suggested Prompt</button>
+            <button class="card-tab" onclick="switchTab(this,'def-data')">Test Data</button>
+          </div>
+          <div id="def-what" class="card-panel active">
+            <div class="sub-label">Required Inputs</div>
+            <div class="tag-list">
+              <span class="tag">Bug Report</span><span class="tag">Error Logs</span>
+              <span class="tag">Screenshots</span><span class="tag">Environment Details</span><span class="tag">Steps to Reproduce</span>
+            </div>
+          </div>
+          <div id="def-prompt" class="card-panel">
+            <div class="sub-label">Suggested Prompt</div>
+            <div class="prompt-block">## Role
+You are a Senior QA Defect Analyst with expertise in root
+cause analysis and defect lifecycle management.
+
+## Goal
+Analyze the provided defect report and produce a structured
+defect analysis document ready for the development team.
+
+## Instructions
+1. Summarize the defect in one clear, jargon-free sentence
+2. Identify the most likely root cause (layer: UI/API/DB/Auth)
+3. List all affected components and modules
+4. Assess impact on end users and business operations
+5. Classify severity: Critical / Major / Minor / Trivial
+6. Classify priority: P1 / P2 / P3 / P4
+7. Write clear, numbered steps to reproduce reliably
+8. Suggest 2–3 potential fix approaches with trade-offs
+9. Recommend regression test cases to add after fix
+
+## Output Format
+### 🐛 Defect Summary (1 sentence)
+### 🔍 Root Cause Analysis
+### 📦 Affected Components
+### 💥 Business Impact
+### 🏷️ Classification: Severity | Priority
+### 🔁 Steps to Reproduce
+### 🛠️ Recommended Fix Options
+### 🔲 Regression Test Cases to Add
+
+## Input
+[Paste bug report, logs, error details here]</div>
+          </div>
+          <div id="def-data" class="card-panel">
+            <div class="test-section">
+              <h5>📝 Sample Bug Report</h5>
+              <div class="story-box">Bug ID: BUG-2241
+Title: Account not locked after 5 failed login attempts
+
+Environment: Production
+Browser: Chrome 124 | OS: Windows 11
+Application: E-commerce Login (/login)
+
+Steps to Reproduce:
+1. Navigate to /login
+2. Enter valid email: user@test.com
+3. Enter wrong password 5 times in a row
+4. Observe account status and UI response
+
+Expected:
+  Account locked after attempt #5
+  User shown lockout message
+  Admin alerted via email
+
+Actual:
+  Login form simply resets
+  No lockout message shown
+  No admin notification sent
+  Account remains accessible
+
+Severity: Critical | Priority: P1
+Reporter: QA Team | Date: 2026-05-01</div>
+            </div>
+            <div class="test-section">
+              <h5>🖼️ UI Reference</h5>
+              <div class="test-img-wrap">
+                <img src="https://i.ibb.co/Swm9L7dD/Chat-GPT-Image-May-3-2026-10-49-42-PM.png" alt="Login page for defect analysis" loading="lazy" />
+                <div class="test-img-caption">📸 Login page — identify the defective component visually</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-note">You can edit the prompt, instructions, and assistant fields based on your project needs.</div>
+        </div>
+
+        <!-- 6. Performance Testing -->
+        <div class="idea-card" id="perf-testing">
+          <div class="idea-card-head">
+            <div class="idea-card-icon c-orange">⚡</div>
+            <div>
+              <div class="idea-card-title">Performance Testing Assistant</div>
+              <div class="idea-card-desc">Design performance test strategies, define load profiles, and analyze results to identify bottlenecks and recommend optimizations.</div>
+            </div>
+          </div>
+          <div class="card-tabs">
+            <button class="card-tab active" onclick="switchTab(this,'pf-what')">What You Need</button>
+            <button class="card-tab" onclick="switchTab(this,'pf-prompt')">Suggested Prompt</button>
+            <button class="card-tab" onclick="switchTab(this,'pf-data')">Test Data</button>
+          </div>
+          <div id="pf-what" class="card-panel active">
+            <div class="sub-label">Required Inputs</div>
+            <div class="tag-list">
+              <span class="tag">SLA / NFR Requirements</span><span class="tag">API Endpoints</span>
+              <span class="tag">Expected Concurrent Users</span><span class="tag">Tech Stack</span><span class="tag">Baseline Metrics</span>
+            </div>
+          </div>
+          <div id="pf-prompt" class="card-panel">
+            <div class="sub-label">Suggested Prompt</div>
+            <div class="prompt-block">## Role
+You are a Performance Test Architect with expertise in
+JMeter, k6, and Gatling load testing frameworks.
+
+## Goal
+Design a complete, risk-based performance test strategy
+for the described system.
+
+## Instructions
+1. Identify the top 5–10 critical transactions to test
+2. Define load profiles for each test type:
+   - Load Test: normal expected traffic volume
+   - Stress Test: beyond peak capacity to find breaking point
+   - Spike Test: sudden burst of traffic (10x normal)
+   - Soak Test: sustained load over 4–8 hours
+3. Define KPIs and pass/fail thresholds:
+   - Response Time: P50, P90, P95, P99 targets
+   - Throughput: requests per second target
+   - Error Rate: maximum acceptable % threshold
+   - Server Resources: CPU, Memory ceilings
+4. Recommend the most suitable tool with justification
+5. Define monitoring metrics and APM tooling strategy
+6. Identify potential bottlenecks to watch during execution
+
+## Output Format
+### 🎯 Test Scope & Key Transactions
+### 📊 Load Profiles (table format)
+### ✅ Pass / Fail Criteria (table format)
+### 🛠️ Recommended Tooling & Justification
+### 📈 Monitoring & Observability Strategy
+### ⚠️ Anticipated Bottlenecks
+
+## Input
+[Paste system description, API list, SLA requirements]</div>
+          </div>
+          <div id="pf-data" class="card-panel">
+            <div class="test-section">
+              <h5>🔌 Target API</h5>
+              <div class="url-chip">🔗 <a href="https://automationexercise.com/api_list" target="_blank" rel="noopener">automationexercise.com/api_list</a></div>
+            </div>
+            <div class="test-section">
+              <h5>📋 Sample NFRs — Login Endpoint</h5>
+              <div class="story-box">SLA Requirements – POST /api/verifyLogin:
+• Response Time P95:  ≤ 1,500 ms
+• Response Time P99:  ≤ 3,000 ms
+• Max Error Rate:     &lt; 1%
+• Normal Concurrent Users:  500
+• Peak Concurrent Users:  2,000
+• Throughput Target:  ≥ 300 req/sec
+• Soak Duration:  4 hours @ 500 users
+• CPU Threshold:  ≤ 70% at peak
+• Memory Threshold:  ≤ 80% at peak</div>
+            </div>
+          </div>
+          <div class="card-note">You can edit the prompt, instructions, and assistant fields based on your project needs.</div>
+        </div>
+
+        <!-- 7. QA Manager -->
+        <div class="idea-card" id="qa-manager">
+          <div class="idea-card-head">
+            <div class="idea-card-icon c-indigo">🎯</div>
+            <div>
+              <div class="idea-card-title">QA Manager Assistant</div>
+              <div class="idea-card-desc">Support QA leads with sprint planning, test coverage analysis, risk-based prioritization, and executive stakeholder reporting.</div>
+            </div>
+          </div>
+          <div class="card-tabs">
+            <button class="card-tab active" onclick="switchTab(this,'qm-what')">What You Need</button>
+            <button class="card-tab" onclick="switchTab(this,'qm-prompt')">Suggested Prompt</button>
+            <button class="card-tab" onclick="switchTab(this,'qm-data')">Test Data</button>
+          </div>
+          <div id="qm-what" class="card-panel active">
+            <div class="sub-label">Required Inputs</div>
+            <div class="tag-list">
+              <span class="tag">Sprint Backlog</span><span class="tag">Test Coverage Report</span>
+              <span class="tag">Team Capacity</span><span class="tag">Defect Summary</span><span class="tag">Release Timeline</span>
+            </div>
+          </div>
+          <div id="qm-prompt" class="card-panel">
+            <div class="sub-label">Suggested Prompt</div>
+            <div class="prompt-block">## Role
+You are an experienced QA Manager with expertise in agile
+quality management, risk-based testing, and stakeholder reporting.
+
+## Goal
+Review the sprint data and produce a complete QA status
+report suitable for executive stakeholder presentation.
+
+## Instructions
+1. Summarize the sprint's QA scope and objectives (3–5 bullets)
+2. Calculate test coverage by feature area (table format)
+3. Identify high-risk features with insufficient coverage
+4. Analyze defect trends:
+   - New, closed, reopen rate, aging defects
+5. Flag any release blockers or critical open defects
+6. Assess team velocity vs. planned testing effort
+7. Provide a clear go / no-go recommendation with justification
+8. Suggest 2–3 process improvements for next sprint
+
+## Output Format
+### 📊 Executive Summary
+### 🔲 Test Coverage by Feature Area
+| Feature | Planned Cases | Executed | Pass | Fail | Coverage % |
+### 🐛 Defect Summary by Severity & Status
+### 🔴 Release Blockers
+### ✅ Go / No-Go Recommendation + Rationale
+### 📈 Next Sprint Quality Recommendations
+
+## Input
+[Paste sprint backlog, coverage data, defect report]</div>
+          </div>
+          <div id="qm-data" class="card-panel">
+            <div class="test-section">
+              <h5>📝 Sample Sprint Summary</h5>
+              <div class="story-box">Sprint 12 – E-commerce Login Module
+Team: 3 QA engineers | Duration: 2 weeks
+Stories in scope: 8 | Story Points: 34
+
+Test Execution:
+  Total cases:  120
+  Passed:       98
+  Failed:       14
+  Blocked:       8
+
+Coverage by Area:
+  Authentication (email/password):  82%
+  Social Login (Google/Facebook):   65%
+  Account Lockout:                  40%
+  Forgot Password:                  55%
+  Remember Me:                      70%
+
+Open Defects:
+  P1 (Critical): 2 | P2 (High): 5 | P3 (Medium): 7
+  Reopen rate: 21%
+
+Velocity:
+  Planned: 120 cases | Actual: 110 cases</div>
+            </div>
+          </div>
+          <div class="card-note">You can edit the prompt, instructions, and assistant fields based on your project needs.</div>
+        </div>
+
+        <!-- 8. Exploratory Testing -->
+        <div class="idea-card" id="exploratory">
+          <div class="idea-card-head">
+            <div class="idea-card-icon c-green">🔍</div>
+            <div>
+              <div class="idea-card-title">Exploratory Testing Assistant</div>
+              <div class="idea-card-desc">Generate structured exploratory testing charters, heuristics, and session-based guides to maximize unscripted coverage.</div>
+            </div>
+          </div>
+          <div class="card-tabs">
+            <button class="card-tab active" onclick="switchTab(this,'ex-what')">What You Need</button>
+            <button class="card-tab" onclick="switchTab(this,'ex-prompt')">Suggested Prompt</button>
+            <button class="card-tab" onclick="switchTab(this,'ex-data')">Test Data</button>
+          </div>
+          <div id="ex-what" class="card-panel active">
+            <div class="sub-label">Required Inputs</div>
+            <div class="tag-list">
+              <span class="tag">Feature Description</span><span class="tag">Application URL</span>
+              <span class="tag">Risk Areas</span><span class="tag">Time Budget</span><span class="tag">Tester Persona</span>
+            </div>
+          </div>
+          <div id="ex-prompt" class="card-panel">
+            <div class="sub-label">Suggested Prompt</div>
+            <div class="prompt-block">## Role
+You are an expert Exploratory Testing practitioner trained in
+session-based test management (SBTM) and testing heuristics
+(SFDPOT, HICCUPPS, CRUD).
+
+## Goal
+Create a set of exploratory testing charters for the described
+feature, ready to be executed by QA testers.
+
+## Instructions
+Generate [N] charters. For each charter:
+1. Write a clear mission statement (1–2 sentences)
+2. Define the scope (what is in / what is out)
+3. List 5–8 specific areas or behaviors to explore
+4. Apply 2–3 named heuristics relevant to this charter
+5. Identify the highest-risk areas to probe deeply
+6. Set a realistic time box (30 / 60 / 90 minutes)
+7. Define what constitutes a noteworthy finding / anomaly
+
+## Output Format per Charter
+### Charter [N]: [Mission Title]
+**Mission:** [What you are trying to learn]
+**Scope:** [In scope / Out of scope]
+**Areas to Explore:**
+  - [area 1]
+  - [area 2] ...
+**Heuristics:** [Named heuristics]
+**Risk Focus:** [Highest-risk areas]
+**Time Box:** [Duration]
+**Anomaly Signals:** [What to flag as a finding]
+
+## Input
+Feature: [Description]
+Application URL: [Link]
+Total Time Budget: [e.g., 3 hours across 2 testers]</div>
+          </div>
+          <div id="ex-data" class="card-panel">
+            <div class="test-section">
+              <h5>🌐 Practice Applications</h5>
+              <div class="url-chip">🔗 <a href="https://practice.expandtesting.com/login" target="_blank" rel="noopener">practice.expandtesting.com/login</a></div>
+              <div class="url-chip">🔗 <a href="https://automationexercise.com/login" target="_blank" rel="noopener">automationexercise.com/login</a></div>
+            </div>
+            <div class="test-section">
+              <h5>🖼️ UI to Explore</h5>
+              <div class="test-img-wrap">
+                <img src="https://i.ibb.co/Swm9L7dD/Chat-GPT-Image-May-3-2026-10-49-42-PM.png" alt="Login page for exploratory testing" loading="lazy" />
+                <div class="test-img-caption">📸 Start your exploration from the login page</div>
+              </div>
+            </div>
+            <div class="test-section">
+              <h5>🔍 Exploration Ideas</h5>
+              <ul>
+                <li>Paste emoji / unicode characters in email field</li>
+                <li>Resize browser to mobile width during login</li>
+                <li>Tab through all fields using keyboard only</li>
+                <li>Use browser back button after successful login</li>
+                <li>Disable JavaScript and attempt to log in</li>
+                <li>Try concurrent logins from two browser tabs</li>
+                <li>Copy-paste password with leading/trailing spaces</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card-note">You can edit the prompt, instructions, and assistant fields based on your project needs.</div>
+        </div>
+
+        <!-- 9. Test Data Generation -->
+        <div class="idea-card" id="test-data-gen">
+          <div class="idea-card-head">
+            <div class="idea-card-icon c-yellow">🗄️</div>
+            <div>
+              <div class="idea-card-title">Test Data Generation Assistant</div>
+              <div class="idea-card-desc">Generate realistic, diverse, and privacy-compliant test datasets tailored to your application's data model and test scenarios.</div>
+            </div>
+          </div>
+          <div class="card-tabs">
+            <button class="card-tab active" onclick="switchTab(this,'td-what')">What You Need</button>
+            <button class="card-tab" onclick="switchTab(this,'td-prompt')">Suggested Prompt</button>
+            <button class="card-tab" onclick="switchTab(this,'td-data')">Test Data</button>
+          </div>
+          <div id="td-what" class="card-panel active">
+            <div class="sub-label">Required Inputs</div>
+            <div class="tag-list">
+              <span class="tag">Data Schema / ERD</span><span class="tag">Field Constraints</span>
+              <span class="tag">Volume Required</span><span class="tag">Output Format (CSV/JSON)</span><span class="tag">Locale / Language</span>
+            </div>
+          </div>
+          <div id="td-prompt" class="card-panel">
+            <div class="sub-label">Suggested Prompt</div>
+            <div class="prompt-block">## Role
+You are a Test Data Engineer with expertise in synthetic data
+generation and data privacy compliance (GDPR, CCPA).
+
+## Goal
+Generate a comprehensive, realistic test dataset that matches
+the provided schema and covers all required test scenarios.
+
+## Instructions
+Generate [N] records covering these scenario types:
+1. ✅ Valid records — happy path, all fields correct
+2. ❌ Invalid records — type mismatches, format violations
+3. 🔲 Boundary values — min/max length, min/max numeric values
+4. ⬜ Empty / null / whitespace-only values
+5. 🌍 Internationalization — Arabic, Chinese, accented characters
+6. 🔐 Security payloads — SQL injection, XSS (safely encoded)
+7. 📏 Oversized inputs — values exceeding field max length
+
+Rules:
+- NO real PII — use synthetic data only
+- Make data realistic and plausible
+- Clearly label each record's scenario type
+
+## Output Format
+Return as: [CSV / JSON / SQL INSERT statements]
+
+Columns: field_name | value | scenario_type | expected_result
+
+## Schema
+Field | Type | Constraints | Notes
+[Paste schema here]</div>
+          </div>
+          <div id="td-data" class="card-panel">
+            <div class="test-section">
+              <h5>📋 Login Form Schema</h5>
+              <div class="story-box">Field: email
+  Type: string | Format: RFC 5322 email
+  Max length: 254 chars | Required: yes
+
+Field: password
+  Type: string | Min: 8 chars | Max: 128 chars
+  Pattern: ≥1 uppercase, ≥1 number, ≥1 special char
+  Required: yes
+
+Field: remember_me
+  Type: boolean | Default: false
+
+Field: login_attempts
+  Type: integer | Range: 0–5 | Lock trigger: 5</div>
+            </div>
+            <div class="test-section">
+              <h5>📊 Sample Generated Dataset</h5>
+              <div class="story-box">email,password,remember_me,scenario
+user@example.com,Pass@1234,false,valid_login
+UPPER@EXAMPLE.COM,Pass@1234,false,uppercase_email_valid
+user+tag@domain.co.uk,P@ss12345,true,complex_valid_email
+notanemail,Pass@1234,false,invalid_email_format
+user@,Pass@1234,false,incomplete_email
+user@test.com,,false,empty_password
+user@test.com,short,false,password_below_min_length
+مستخدم@example.com,Pass@1234,false,arabic_local_part
+' OR '1'='1,Pass@1234,false,sql_injection_email
+&lt;script&gt;alert(1)&lt;/script&gt;@x.com,P@ss1,false,xss_in_email</div>
+            </div>
+          </div>
+          <div class="card-note">You can edit the prompt, instructions, and assistant fields based on your project needs.</div>
+        </div>
+
+      </div><!-- /.cards-grid -->
+    </section>
+
+    <footer>
+      <strong>IBM Consulting Advantage</strong> — AI Assistant Guide
+      <p style="margin-top:.5rem;color:var(--gray-50);font-size:.8rem;">For internal use by IBM Consulting teams. Content may be updated as the platform evolves.</p>
+    </footer>
+
+  </main>
+</div>
 
 <script>
-    function showTeam(teamNum) {
-        const btns = document.querySelectorAll('.team-btn');
-        btns.forEach((btn, i) => {
-            if (i === (teamNum - 1)) btn.classList.add('active');
-            else btn.classList.remove('active');
-        });
+// Hamburger
+const hamburger = document.getElementById('hamburger');
+const sidebar   = document.getElementById('sidebar');
+const overlay   = document.getElementById('sidebarOverlay');
+function toggleSidebar(state) {
+  const open = state !== undefined ? state : !sidebar.classList.contains('open');
+  sidebar.classList.toggle('open', open);
+  overlay.classList.toggle('open', open);
+  hamburger.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+hamburger.addEventListener('click', () => toggleSidebar());
+overlay.addEventListener('click',   () => toggleSidebar(false));
+document.querySelectorAll('.sidebar-nav a').forEach(link => {
+  link.addEventListener('click', () => { if (window.innerWidth <= 768) toggleSidebar(false); });
+});
 
-        const contents = document.querySelectorAll('.team-content');
-        contents.forEach(content => content.classList.add('hidden'));
-        document.getElementById('t' + teamNum).classList.remove('hidden');
+// Active link on scroll
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.sidebar-nav a[href^="#"]').forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id);
+      });
     }
-</script>
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+document.querySelectorAll('[id]').forEach(s => io.observe(s));
 
+// Card tabs
+function switchTab(btn, panelId) {
+  const card = btn.closest('.idea-card');
+  card.querySelectorAll('.card-tab').forEach(t => t.classList.remove('active'));
+  card.querySelectorAll('.card-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+</script>
 </body>
 </html>
